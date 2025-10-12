@@ -1,0 +1,33 @@
+name: 'Dependency Review - Advanced Inline Config'
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v5
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        # Possible values: "critical", "high", "moderate", "low"
+        fail-on-severity: critical
+        
+        # You can only include one of these two options: `allow-licenses` and `deny-licenses`
+        # ([String]). Only allow these licenses (optional)
+        # Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/
+        allow-licenses: GPL-3.0, BSD-3-Clause, MIT
+        
+        # ([String]). Skip these GitHub Advisory Database IDs during detection (optional)
+        # Possible values: Any valid GitHub Advisory Database ID from https://github.com/advisories
+        # Example: allow-ghsas: GHSA-abcd-1234-5679, GHSA-efgh-1234-5679
+        
+        # ([String]). Block pull requests that introduce vulnerabilities in the scopes that match this list (optional)
+        # Possible values: "development", "runtime", "unknown"
+        fail-on-scopes: development, runtime
+        
+        # ([String]). Comment summary type, can be "always" or "on-failure"
+        comment-summary-in-pr: always
